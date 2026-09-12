@@ -1,31 +1,50 @@
 class Solution {
+    int[] nsl(int[] arr) {
+        Stack<Integer> st=new Stack<>();
+        int[] ans=new int[arr.length];
+        for(int i=0;i<arr.length;i++) {
+            while(!st.isEmpty()&&arr[st.peek()]>=arr[i])
+            {
+                st.pop();
+            }
+            if(!st.isEmpty())
+            {
+                ans[i]=st.peek();
+            }
+            else {
+                ans[i]=-1;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+    int[] nsr(int[] arr) {
+        Stack<Integer> st=new Stack<>();
+        int[] ans=new int[arr.length];
+        for(int i=arr.length-1;i>=0;i--) {
+            while(!st.isEmpty()&&arr[st.peek()]>=arr[i])
+            {
+                st.pop();
+            }
+            if(!st.isEmpty())
+            {
+                ans[i]=st.peek();
+            }
+            else {
+                ans[i]=arr.length;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
     public int largestRectangleArea(int[] heights) {
-        int n = heights.length;
-        int[] left = new int[n];
-        int[] right = new int[n];
-        Stack<Integer> stack = new Stack<>();
-
-        // Nearest Smaller to Left
-        for (int i = 0; i < n; i++) {
-            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) stack.pop();
-            left[i] = stack.isEmpty() ? -1 : stack.peek();
-            stack.push(i);
+        int[] nsl=nsl(heights);
+        int[] nsr=nsr(heights);
+        int max=0;
+        for(int i=0;i<heights.length;i++) {
+            int area=heights[i]*(nsr[i]-nsl[i]-1);
+            max=Math.max(max,area);
         }
-
-        stack.clear(); // Reuse stack
-
-        // Nearest Smaller to Right
-        for (int i = n - 1; i >= 0; i--) {
-            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) stack.pop();
-            right[i] = stack.isEmpty() ? n : stack.peek();
-            stack.push(i);
-        }
-
-        int maxArea = 0;
-        for (int i = 0; i < n; i++) {
-            int width = right[i] - left[i] - 1;
-            maxArea = Math.max(maxArea, heights[i] * width);
-        }
-        return maxArea;
+        return max;
     }
 }
