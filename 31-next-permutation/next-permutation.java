@@ -1,35 +1,40 @@
+
 class Solution {
-    public void nextPermutation(int[] nums) {
-        int i = nums.length - 1;
-        while (i > 0 && nums[i-1] >= nums[i]) {
-            i--;
-        }
-        if (i == 0) {
-            reverse(nums, 0, nums.length-1);
-            return;
-        }
-        int j = nums.length - 1;
-        while (j >= i && nums[j] <= nums[i-1]) {
-            j--;
-        }
-        swap(nums, i-1, j);
-        reverse(nums, i, nums.length-1);
+    void swap(int[] nums, int a, int b) {
+        int temp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = temp;
     }
 
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-
-    private void reverse(int[] nums, int start, int end) {
-        while (start < end) {
-            int temp = nums[start];
-            nums[start] = nums[end];
-            nums[end] = temp;
-            start++;
+    void reverse(int[] nums, int st, int end) {
+        while (st < end) {
+            swap(nums, st, end);
+            st++;
             end--;
         }
     }
 
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int i = n - 2;
+
+        // Step 1: Find the pivot
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+
+        // Step 2: Find the rightmost element greater than pivot
+        if (i >= 0) {
+            int j = n - 1;
+
+            while (nums[j] <= nums[i]) {
+                j--;
+            }
+
+            swap(nums, i, j);
+        }
+
+        // Step 3: Reverse the suffix
+        reverse(nums, i + 1, n - 1);
+    }
 }
