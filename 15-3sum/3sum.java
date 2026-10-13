@@ -2,11 +2,10 @@ class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> ans=new ArrayList<>();
-        int prev=0;
         for(int i=0;i<nums.length-2;i++) {
             int st=i+1;
             int end=nums.length-1;
-            if(i>0&&prev==nums[i]) {
+            if(i>0&&nums[i-1]==nums[i]) {
                 continue;
             }
             while(st<end) {
@@ -33,7 +32,6 @@ class Solution {
                 else {
                     st++;
                 }
-                 prev=nums[i];
             }
            
         }
