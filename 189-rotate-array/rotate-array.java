@@ -1,20 +1,17 @@
 class Solution {
-       void swap(int n[],int s,int e)
-       {
-          while(s<e)
-          {
-            int temp=n[s];
-            n[s]=n[e];
-            n[e]=temp;
-            s++;
-            e--;
-          }
-       }
+    void reverseArray(int[] arr,int st,int end) {
+            while(st<end) {
+                 int temp=arr[st];
+                 arr[st]=arr[end];
+                 arr[end]=temp;
+                st++;
+                end--;
+            }
+    }
     public void rotate(int[] nums, int k) {
-        int n=nums.length;
-        k=k%n;
-        swap(nums,0,n-1);
-        swap(nums,0,k-1);
-        swap(nums,k,n-1);
+        k=k%nums.length;
+        reverseArray(nums,0,nums.length-1);
+        reverseArray(nums,0,k-1);
+        reverseArray(nums,k,nums.length-1);
     }
 }
