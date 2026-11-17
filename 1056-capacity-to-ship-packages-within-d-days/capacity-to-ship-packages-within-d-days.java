@@ -1,64 +1,42 @@
 class Solution {
-    int max(int weights[])
-    {
-        int maxi=weights[0];
-        for(int i=1;i<weights.length;i++)
-        {
-            if(maxi<weights[i]){
-                maxi=weights[i];
+    boolean canShift(int[] arr,int mid,int days) {
+        int capacity=0;
+        int cnt=1;
+        for(int i=0;i<arr.length;i++) {
+            if(arr[i]>mid) {
+                return false;
+            }
+            if(capacity+arr[i]<=mid) {
+                 capacity+=arr[i];
+            }
+            else {
+               cnt++;
+                capacity=arr[i];
             }
         }
-        return maxi;
+        return cnt<=days;
     }
-    int sumOfDigits(int[] weights)
-    {
+    int total(int[] arr) {
         int sum=0;
-        for(int wt:weights)
-        {
-            sum+=wt;
+        for(int i=0;i<arr.length;i++) {
+            sum+=arr[i];
         }
         return sum;
     }
-    boolean isPossible(int mid,int[] weights,int days)
-    {
-        int wt=0;
-        int cnt=1;
-        for(int i=0;i<weights.length;i++)
-        {
-            if(wt+weights[i]>mid)
-            {
-                cnt++;
-                wt=weights[i];
-            }
-            else
-            {
-                wt+=weights[i];
-            }
-            if(cnt>days)
-            {
-                return false;
-            }
-        }
-        return true;
-
-    }
     public int shipWithinDays(int[] weights, int days) {
-      int st=max(weights);
-      int end=sumOfDigits(weights); 
-      int ans=end;
-      while(st<=end)
-      {
+       int st=1;
+       int end=total(weights);
+       int ans=0;
+       while(st<=end) {
         int mid=st+(end-st)/2;
-        if(isPossible(mid,weights,days))
-        {
+        if(canShift(weights,mid,days)) {
             ans=mid;
             end=mid-1;
         }
-        else
-        {
+        else {
             st=mid+1;
         }
-      }
-      return ans; 
+       }
+       return ans;
     }
 }
